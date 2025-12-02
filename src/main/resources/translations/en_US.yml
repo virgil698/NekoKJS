@@ -16,9 +16,12 @@ plugin:
 command:
   no-permission: "§cYou don't have permission to execute this command!"
   reload:
-    start: "§eReloading NekoKJS scripts..."
-    success: "§aScripts reloaded successfully! Time taken: {time}ms"
-    failed: "§cFailed to reload scripts: {error}"
+    start: "§eReloading configurations..."
+    all-success: "§aAll configurations reloaded successfully! Time taken: {time}ms"
+    config-success: "§aPlugin configuration reloaded successfully! Time taken: {time}ms"
+    dataconfig-success: "§aScript configuration reloaded successfully! Time taken: {time}ms"
+    failed: "§cFailed to reload configurations: {error}"
+    unknown-type: "§cUnknown reload type! Available: all, config, dataconfig"
   unknown: "§cUnknown subcommand! Use /nekokjs help for help"
   cooldown: "§cPlease wait {seconds} seconds before using this command again!"
   registered: "Command registered: /nekokjs"
@@ -37,10 +40,28 @@ info:
 # Help messages
 help:
   header: "§6========== NekoKJS Help =========="
-  reload: "§e/nekokjs reload §7- Reload all scripts"
+  reload: "§e/nekokjs reload [all|config|dataconfig] §7- Reload configurations"
+  list: "§e/nekokjs list [pack_name] §7- View script packs list or details"
   info: "§e/nekokjs info §7- View plugin information"
   help: "§e/nekokjs help §7- Show this help message"
   footer: "§6================================"
+
+# Script pack list messages
+list:
+  header: "§6========== Script Packs =========="
+  no-packs: "§cNo script packs found"
+  pack-item: "§e{name} §7({namespace}) §fv{version} §7- {status}"
+  footer: "§6Total: §f{count} §6pack(s)"
+  pack-not-found: "§cScript pack not found: {name}"
+  detail-header: "§6========== {name} Details =========="
+  detail-namespace: "§eNamespace: §f{namespace}"
+  detail-version: "§eVersion: §f{version}"
+  detail-authors: "§eAuthors: §f{authors}"
+  detail-description: "§eDescription: §f{description}"
+  detail-entry: "§eEntry File: §f{entry}"
+  detail-priority: "§ePriority: §f{priority}"
+  detail-enabled: "§eEnabled: {enabled}"
+  detail-footer: "§6================================"
 
 # Script messages
 script:

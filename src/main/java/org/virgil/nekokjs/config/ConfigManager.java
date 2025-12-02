@@ -53,21 +53,25 @@ public class ConfigManager {
         libsFolder = new File(dataFolder, "libs");
         if (!libsFolder.exists()) {
             libsFolder.mkdirs();
-            // 将在 loadConfigs 后记录
         }
         
         // resources 文件夹 - KubeJS 脚本存放处
         resourcesFolder = new File(dataFolder, "resources");
+        boolean resourcesCreated = false;
         if (!resourcesFolder.exists()) {
             resourcesFolder.mkdirs();
-            // 将在 loadConfigs 后记录
+            resourcesCreated = true;
+        }
+        
+        // 如果是首次创建 resources 文件夹，生成示例脚本包
+        if (resourcesCreated) {
+            createExampleScriptPack();
         }
         
         // translations 文件夹 - 语言文件
         translationsFolder = new File(dataFolder, "translations");
         if (!translationsFolder.exists()) {
             translationsFolder.mkdirs();
-            // 将在 loadConfigs 后记录
         }
     }
 
@@ -81,11 +85,51 @@ public class ConfigManager {
         // 加载 commands.yml
         commands = loadConfig("commands.yml");
         
-        // 加载默认语言文件
+        // 初始化所有语言文件
+        initializeAllTranslations();
+        
+        // 加载当前使用的语言文件
         translations = loadTranslation(config.getString("language", "zh_CN"));
         languageManager = new LanguageManager(translations);
         
         logger.info(languageManager.configLoaded());
+    }
+    
+    /**
+     * 初始化所有语言文件（确保所有语言文件都被创建）
+     */
+    private void initializeAllTranslations() {
+        String[] languages = {"zh_CN", "en_US"};
+        
+        for (String language : languages) {
+            File langFile = new File(translationsFolder, language + ".yml");
+            if (!langFile.exists()) {
+                saveResource("translations/" + language + ".yml");
+                logger.info("已创建语言文件: " + language + ".yml");
+            }
+        }
+    }
+    
+    /**
+     * 重新加载配置文件
+     */
+    public void reloadConfig() {
+        logger.info("正在重新加载插件配置...");
+        
+        // 重新加载 config.yml
+        config = loadConfig("config.yml");
+        
+        // 重新加载 commands.yml
+        commands = loadConfig("commands.yml");
+        
+        // 确保所有语言文件存在
+        initializeAllTranslations();
+        
+        // 重新加载当前使用的语言文件
+        translations = loadTranslation(config.getString("language", "zh_CN"));
+        languageManager = new LanguageManager(translations);
+        
+        logger.info("插件配置已重新加载");
     }
 
     /**
@@ -284,5 +328,46 @@ public class ConfigManager {
     
     public LanguageManager getLanguageManager() {
         return languageManager;
+    }
+    
+    /**
+     * 创建示例脚本包
+     */
+    private void createExampleScriptPack() {
+        try {
+            logger.info("正在生成示例脚本包...");
+            
+            // 示例脚本包文件列表
+            String[] exampleFiles = {
+                "resources/example_pack/pack.yml",
+                "resources/example_pack/data/main.js",
+                "resources/example_pack/data/config.js",
+                "resources/example_pack/data/utils/helper.js",
+                "resources/example_pack/data/events/player.js",
+                "resources/example_pack/data/events/world.js"
+            };
+            
+            for (String resourcePath : exampleFiles) {
+                InputStream input = plugin.getResource(resourcePath);
+                if (input == null) {
+                    logger.warning("无法找到资源文件: " + resourcePath);
+                    continue;
+                }
+                
+                // 目标文件路径 (去掉开头的 "resources/")
+                String relativePath = resourcePath.substring("resources/".length());
+                File outFile = new File(resourcesFolder, relativePath);
+                outFile.getParentFile().mkdirs();
+                
+                // 复制文件
+                Files.copy(input, outFile.toPath());
+                input.close();
+            }
+            
+            logger.info("示例脚本包已生成: example_pack");
+        } catch (IOException e) {
+            logger.severe("生成示例脚本包失败: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

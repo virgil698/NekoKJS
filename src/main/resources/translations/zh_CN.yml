@@ -16,9 +16,12 @@ plugin:
 command:
   no-permission: "§c你没有权限执行此命令！"
   reload:
-    start: "§e正在重新加载 NekoKJS 脚本..."
-    success: "§a脚本重新加载完成！耗时: {time}ms"
-    failed: "§c脚本重新加载失败: {error}"
+    start: "§e正在重新加载配置..."
+    all-success: "§a所有配置重新加载完成！耗时: {time}ms"
+    config-success: "§a插件配置重新加载完成！耗时: {time}ms"
+    dataconfig-success: "§a脚本配置重新加载完成！耗时: {time}ms"
+    failed: "§c配置重新加载失败: {error}"
+    unknown-type: "§c未知的重载类型！可用: all, config, dataconfig"
   unknown: "§c未知的子命令！使用 /nekokjs help 查看帮助"
   cooldown: "§c请等待 {seconds} 秒后再使用此命令！"
   registered: "命令已注册: /nekokjs"
@@ -37,10 +40,28 @@ info:
 # 帮助消息
 help:
   header: "§6========== NekoKJS 帮助 =========="
-  reload: "§e/nekokjs reload §7- 重新加载所有脚本"
+  reload: "§e/nekokjs reload [all|config|dataconfig] §7- 重新加载配置"
+  list: "§e/nekokjs list [包名] §7- 查看脚本包列表或详情"
   info: "§e/nekokjs info §7- 查看插件信息"
   help: "§e/nekokjs help §7- 显示此帮助信息"
   footer: "§6================================"
+
+# 脚本包列表消息
+list:
+  header: "§6========== 脚本包列表 =========="
+  no-packs: "§c没有找到任何脚本包"
+  pack-item: "§e{name} §7({namespace}) §fv{version} §7- {status}"
+  footer: "§6总计: §f{count} §6个脚本包"
+  pack-not-found: "§c找不到脚本包: {name}"
+  detail-header: "§6========== {name} 详细信息 =========="
+  detail-namespace: "§e命名空间: §f{namespace}"
+  detail-version: "§e版本: §f{version}"
+  detail-authors: "§e作者: §f{authors}"
+  detail-description: "§e描述: §f{description}"
+  detail-entry: "§e入口文件: §f{entry}"
+  detail-priority: "§e优先级: §f{priority}"
+  detail-enabled: "§e已启用: {enabled}"
+  detail-footer: "§6================================"
 
 # 脚本消息
 script:

@@ -93,8 +93,32 @@ public class ScriptContext {
     public Object evaluatePackScript(String script, String sourceName, ScriptPack pack) {
         // 创建脚本加载器
         this.scriptLoader = new ScriptLoaderAPI(logger, contextFactory, scope, pack);
-        ScriptableObject.putProperty(scope, "load", scriptLoader, context);
-        ScriptableObject.putProperty(scope, "require", scriptLoader, context);
+        
+        // 使用 CustomFunction 注册 load 函数
+        dev.latvian.mods.rhino.CustomFunction loadFunc = new dev.latvian.mods.rhino.CustomFunction(
+            "load",
+            (cx, args) -> {
+                if (args.length > 0) {
+                    return scriptLoader.load(cx.toString(args[0]));
+                }
+                return null;
+            },
+            new dev.latvian.mods.rhino.type.TypeInfo[]{dev.latvian.mods.rhino.type.TypeInfo.STRING}
+        );
+        ScriptableObject.putProperty(scope, "load", loadFunc, context);
+        
+        // 使用 CustomFunction 注册 require 函数
+        dev.latvian.mods.rhino.CustomFunction requireFunc = new dev.latvian.mods.rhino.CustomFunction(
+            "require",
+            (cx, args) -> {
+                if (args.length > 0) {
+                    return scriptLoader.require(cx.toString(args[0]));
+                }
+                return null;
+            },
+            new dev.latvian.mods.rhino.type.TypeInfo[]{dev.latvian.mods.rhino.type.TypeInfo.STRING}
+        );
+        ScriptableObject.putProperty(scope, "require", requireFunc, context);
         
         // 执行入口脚本
         return evaluateScript(script, sourceName);
