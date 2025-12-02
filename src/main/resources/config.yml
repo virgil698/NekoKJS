@@ -1,0 +1,40 @@
+# NekoKJS 配置文件
+# KubeJS plugin version for Leaves server
+
+# 语言设置 (zh_CN, en_US)
+language: zh_CN
+
+# 调试模式
+# 启用后会输出更多调试信息
+debug: false
+
+# 自动重载脚本
+# 检测到文件变化时自动重载（开发时有用）
+auto-reload: false
+
+# 脚本执行超时时间（毫秒）
+# 防止脚本死循环导致服务器卡顿
+script-timeout: 5000
+
+# 脚本引擎设置
+script-engine:
+  # JavaScript 引擎优化级别 (-1 = 解释模式, 0-9 = 编译优化)
+  optimization-level: -1
+  # 语言版本 (ES5, ES6)
+  language-version: ES6
+
+# 事件系统设置
+events:
+  # 是否启用服务器 Tick 事件
+  # 注意：Tick 事件会频繁触发，可能影响性能
+  enable-server-tick: true
+  # Tick 事件执行间隔（tick）
+  # 1 = 每 tick 执行，20 = 每秒执行一次
+  tick-interval: 20
+
+# 性能设置
+performance:
+  # 脚本缓存
+  enable-cache: true
+  # 最大缓存脚本数量
+  max-cache-size: 100

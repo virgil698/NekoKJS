@@ -1,0 +1,32 @@
+# NekoKJS 脚本包配置文件
+# Script Pack Configuration
+
+# 包基本信息
+pack:
+  name: "Example Pack" # 包名称
+  namespace: "example_pack" # 包命名空间（用于识别包，建议使用小写字母和下划线）
+  version: "1.0.0" # 版本号
+  authors: # 作者
+    - "NekoKJS"
+  description: "An example script pack for NekoKJS" # 描述
+  dependencies: [] # 依赖的其他包（可选）
+
+# 加载设置
+loading:
+  enabled: true # 是否启用此包
+  priority: 100 # 加载优先级（数字越小优先级越高）
+  load-on-startup: true # 是否在服务器启动时加载
+
+# 脚本设置
+scripts:
+  # 脚本入口文件（相对于包根目录）
+  # Script entry point (relative to pack root directory)
+  # 必须指定一个存在的 JS 文件作为入口
+  # Must specify an existing JS file as the entry point
+  # 
+  # 示例 / Examples:
+  #   - "data/main.js"
+  #   - "data/index.js"
+  #   - "data/init.js"
+  #   - "scripts/entry.js"
+  entry: "data/main.js"

@@ -1,0 +1,94 @@
+# NekoKJS English Language File
+# English (US)
+
+# Plugin startup/shutdown messages
+plugin:
+  loading: "NekoKJS is loading..."
+  starting: "NekoKJS is starting..."
+  started: "NekoKJS has been successfully started!"
+  stopping: "NekoKJS is shutting down..."
+  stopped: "NekoKJS has been stopped!"
+  scripts-dir: "Scripts directory: {dir}"
+  use-help: "Use /nekokjs help for command help"
+  bridge-init-failed: "Failed to initialize Bridge: {error}"
+
+# Command messages
+command:
+  no-permission: "§cYou don't have permission to execute this command!"
+  reload:
+    start: "§eReloading NekoKJS scripts..."
+    success: "§aScripts reloaded successfully! Time taken: {time}ms"
+    failed: "§cFailed to reload scripts: {error}"
+  unknown: "§cUnknown subcommand! Use /nekokjs help for help"
+  cooldown: "§cPlease wait {seconds} seconds before using this command again!"
+  registered: "Command registered: /nekokjs"
+
+# Info messages
+info:
+  header: "§6========== NekoKJS Info =========="
+  version: "§eVersion: §f{version}"
+  authors: "§eAuthors: §f{authors}"
+  scripts-dir: "§eScripts Directory: §f{dir}"
+  tick-count: "§eServer Tick Count: §f{count}"
+  loaded-scripts: "§eLoaded Scripts: §f{count}"
+  registered-events: "§eRegistered Events: §f{count}"
+  footer: "§6================================"
+
+# Help messages
+help:
+  header: "§6========== NekoKJS Help =========="
+  reload: "§e/nekokjs reload §7- Reload all scripts"
+  info: "§e/nekokjs info §7- View plugin information"
+  help: "§e/nekokjs help §7- Show this help message"
+  footer: "§6================================"
+
+# Script messages
+script:
+  context-initialized: "Script context initialized: {type}"
+  context-init-failed: "Failed to initialize script context: {error}"
+  context-cleaned: "Script context cleaned: {type}"
+  contexts-initialized: "Script contexts initialized"
+  dir-created: "Created scripts directory and generated example scripts"
+  all-loaded: "All scripts loaded, total {count} files"
+  type-loading: "Loading {type} scripts, total {count} files"
+  loading: "Loading script: {name}"
+  loaded: "Successfully loaded script: {name}"
+  execute-failed: "Failed to execute script [{name}]: {error}"
+  read-failed: "Failed to read script file: {name} - {error}"
+  failed: "Failed to load script: {name} - {error}"
+  all-reloading: "Reloading all scripts..."
+  all-reloaded: "Scripts reloaded"
+  all-unloaded: "All scripts unloaded"
+  server-started: "Server started, initializing server scripts..."
+  example-startup-failed: "Failed to create example startup script: {error}"
+  example-server-failed: "Failed to create example server script: {error}"
+
+# Event messages
+event:
+  manager-initialized: "Event manager initialized (Tick interval: {interval})"
+  manager-cleaned: "Event manager cleaned"
+  server-loaded: "Server loaded: {type}"
+  tick-failed: "Failed to trigger server tick event: {error}"
+  registered: "Event listener registered: {event}"
+  not-found: "Event class not found: {event}"
+  register-failed: "Failed to register event listener: {error}"
+  callback-failed: "Failed to execute script callback [{event}]: {error}"
+  callbacks-failed: "Error occurred while executing event callbacks [{event}]: {error}"
+  listeners-cleaned: "Event listeners cleaned"
+
+# Config messages
+config:
+  loaded: "Configuration files loaded"
+  reloaded: "Configuration reloaded"
+  file-created: "Created config file: {file}"
+  resource-save-failed: "Failed to save resource file {file}: {error}"
+  default-create-failed: "Failed to create default config file: {error}"
+  libs-created: "Created libs folder: {path}"
+  resources-created: "Created resources folder: {path}"
+  translations-created: "Created translations folder: {path}"
+
+# Error messages
+error:
+  config-load: "§cFailed to load config: {error}"
+  script-timeout: "§cScript execution timeout: {name}"
+  unknown: "§cAn unknown error occurred: {error}"

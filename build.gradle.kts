@@ -13,32 +13,23 @@ plugins {
     alias(libs.plugins.accessWiden)
 }
 
-// TODO: change this to your plugin group
-group = "com.example"
-// TODO: change this to your plugin version
+group = "org.virgil.nekokjs"
 version = "1.0.0-SNAPSHOT"
 
 // please check https://docs.papermc.io/paper/dev/plugin-yml/ and https://docs.papermc.io/paper/dev/getting-started/paper-plugins/
 val pluginJson = leavesPluginJson {
-    // INFO: name and version defaults to project name and version
-    // TODO: change this to your main class
-    main = "com.example.plugin.TemplatePlugin"
-    // TODO: change this to your name
-    authors.add("YourName")
-    // TODO: change this to your plugin description
-    description = "leaves template plugin"
-    // TODO: support or not is decided by you
+    name = "NekoKJS"
+    main = "org.virgil.nekokjs.NekoKJSPlugin"
+    authors.add("Virgil")
+    description = "KubeJS plugin version for Leaves server based on Mixin"
     foliaSupported = false
     apiVersion = libs.versions.leavesApi.extractMCVersion()
     // TODO: if your logic can work without mixin, can use `features.optional.add("mixin")`
     features.required.add("mixin")
     mixin.apply {
-        // TODO: replace this to your mixin package name
-        packageName = "com.example.plugin.mixin"
-        // TODO: replace this to your access widener file name
-        accessWidener = "leaves-template-plugin.accesswidener"
-        // TODO: replace this to your mixin configs name
-        mixins.add("leaves-template-plugin.mixins.json")
+        packageName = "org.virgil.nekokjs.mixin"
+        accessWidener = "nekokjs.accesswidener"
+        mixins.add("nekokjs.mixins.json")
     }
     // TODO: add your plugin dependencies
     // please check https://docs.papermc.io/paper/dev/getting-started/paper-plugins/#dependency-declaration
@@ -75,6 +66,10 @@ repositories {
     maven("https://repo.leavesmc.org/snapshots/") {
         name = "leavesmc-snapshots"
     }
+    // Latvian Mods Maven - 用于 Rhino
+    maven("https://maven.latvian.dev/releases") {
+        name = "latvian"
+    }
     mavenLocal()
 }
 
@@ -94,7 +89,10 @@ val mixinSourceSet: SourceSet = sourceSets["mixin"]
 
 dependencies {
     apply `plugin dependencies`@{
-        // TODO: your plugin deps here
+        // JavaScript 引擎 - 使用与 KubeJS 相同的 Rhino 版本
+        implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
+        // Gson 用于 JSON 处理
+        implementation("com.google.code.gson:gson:2.10.1")
     }
 
     apply `api and server source`@{

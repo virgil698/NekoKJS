@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8.7",
+  "package": "org.virgil.nekokjs.mixin.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "target": "@env(PREINIT)",
+  "mixins": [
+    "MinecraftServerMixin"
+  ],
+  "plugin": "org.virgil.nekokjs.mixin.NekoKJSMixinConfigPlugin"
+}

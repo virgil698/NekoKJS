@@ -1,0 +1,94 @@
+# NekoKJS 中文语言文件
+# Simplified Chinese (简体中文)
+
+# 插件启动/关闭消息
+plugin:
+  loading: "NekoKJS 正在加载..."
+  starting: "NekoKJS 正在启动..."
+  started: "NekoKJS 已成功启动！"
+  stopping: "NekoKJS 正在关闭..."
+  stopped: "NekoKJS 已关闭！"
+  scripts-dir: "脚本目录: {dir}"
+  use-help: "使用 /nekokjs help 查看命令帮助"
+  bridge-init-failed: "初始化 Bridge 失败: {error}"
+
+# 命令消息
+command:
+  no-permission: "§c你没有权限执行此命令！"
+  reload:
+    start: "§e正在重新加载 NekoKJS 脚本..."
+    success: "§a脚本重新加载完成！耗时: {time}ms"
+    failed: "§c脚本重新加载失败: {error}"
+  unknown: "§c未知的子命令！使用 /nekokjs help 查看帮助"
+  cooldown: "§c请等待 {seconds} 秒后再使用此命令！"
+  registered: "命令已注册: /nekokjs"
+
+# 信息消息
+info:
+  header: "§6========== NekoKJS 信息 =========="
+  version: "§e版本: §f{version}"
+  authors: "§e作者: §f{authors}"
+  scripts-dir: "§e脚本目录: §f{dir}"
+  tick-count: "§e服务器 Tick 数: §f{count}"
+  loaded-scripts: "§e已加载脚本: §f{count}"
+  registered-events: "§e已注册事件: §f{count}"
+  footer: "§6================================"
+
+# 帮助消息
+help:
+  header: "§6========== NekoKJS 帮助 =========="
+  reload: "§e/nekokjs reload §7- 重新加载所有脚本"
+  info: "§e/nekokjs info §7- 查看插件信息"
+  help: "§e/nekokjs help §7- 显示此帮助信息"
+  footer: "§6================================"
+
+# 脚本消息
+script:
+  context-initialized: "脚本上下文初始化完成: {type}"
+  context-init-failed: "初始化脚本上下文失败: {error}"
+  context-cleaned: "脚本上下文已清理: {type}"
+  contexts-initialized: "脚本上下文初始化完成"
+  dir-created: "已创建脚本目录并生成示例脚本"
+  all-loaded: "所有脚本加载完成，共 {count} 个文件"
+  type-loading: "开始加载 {type} 脚本，共 {count} 个文件"
+  loading: "正在加载脚本: {name}"
+  loaded: "成功加载脚本: {name}"
+  execute-failed: "执行脚本失败 [{name}]: {error}"
+  read-failed: "读取脚本文件失败: {name} - {error}"
+  failed: "加载脚本失败: {name} - {error}"
+  all-reloading: "开始重新加载所有脚本..."
+  all-reloaded: "脚本重新加载完成"
+  all-unloaded: "所有脚本已卸载"
+  server-started: "服务器启动完成，执行服务端脚本初始化..."
+  example-startup-failed: "创建示例启动脚本失败: {error}"
+  example-server-failed: "创建示例服务端脚本失败: {error}"
+
+# 事件消息
+event:
+  manager-initialized: "事件管理器已初始化（Tick 间隔: {interval}）"
+  manager-cleaned: "事件管理器已清理"
+  server-loaded: "服务器加载完成: {type}"
+  tick-failed: "触发服务器 Tick 事件失败: {error}"
+  registered: "已注册事件监听器: {event}"
+  not-found: "找不到事件类: {event}"
+  register-failed: "注册事件监听器失败: {error}"
+  callback-failed: "执行脚本回调失败 [{event}]: {error}"
+  callbacks-failed: "执行事件回调时发生错误 [{event}]: {error}"
+  listeners-cleaned: "事件监听器已清理"
+
+# 配置消息
+config:
+  loaded: "配置文件加载完成"
+  reloaded: "配置已重新加载"
+  file-created: "已创建配置文件: {file}"
+  resource-save-failed: "无法保存资源文件 {file}: {error}"
+  default-create-failed: "创建默认配置文件失败: {error}"
+  libs-created: "已创建 libs 文件夹: {path}"
+  resources-created: "已创建 resources 文件夹: {path}"
+  translations-created: "已创建 translations 文件夹: {path}"
+
+# 错误消息
+error:
+  config-load: "§c配置文件加载失败: {error}"
+  script-timeout: "§c脚本执行超时: {name}"
+  unknown: "§c发生未知错误: {error}"

@@ -1,0 +1,38 @@
+# NekoKJS 命令配置文件
+# 使用 Paper 命令 API，此文件用于配置命令行为
+
+# 主命令配置
+nekokjs:
+  # 是否启用主命令
+  enabled: true
+  
+  # 命令别名
+  # 可以使用这些别名来执行命令
+  aliases:
+    - nkjs
+    - kjs
+  
+  # 子命令配置
+  subcommands:
+    reload:
+      # 是否启用重载命令
+      enabled: true
+      # 需要的权限
+      permission: nekokjs.command.reload
+      # 冷却时间（秒）
+      cooldown: 5
+    
+    info:
+      enabled: true
+      permission: nekokjs.command.use
+      cooldown: 0
+    
+    help:
+      enabled: true
+      permission: nekokjs.command.use
+      cooldown: 0
+
+# 权限设置说明
+# nekokjs.command.use - 使用基本命令（默认：所有人）
+# nekokjs.command.reload - 重载脚本（默认：OP）
+# nekokjs.command.admin - 管理员权限（默认：OP）

@@ -1,0 +1,8 @@
+accessWidener v2 named
+# NekoKJS AccessWidener 配置
+# 用于访问 Minecraft 内部类和方法
+
+# 示例：如果需要访问某些私有方法或字段，在这里添加
+# accessible field net/minecraft/server/MinecraftServer serverThread Ljava/lang/Thread;
+# accessible method net/minecraft/server/MinecraftServer getPlayerList ()Lnet/minecraft/server/players/PlayerList;
+accessible method org/bukkit/craftbukkit/Main asList ([Ljava/lang/String;)Ljava/util/List;
