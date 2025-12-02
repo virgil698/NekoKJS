@@ -30,6 +30,8 @@ public class NekoKJSPlugin extends JavaPlugin {
         instance = this;
         logger = getLogger();
         
+        logger.info("NekoKJS is loading...");
+        
         // 初始化 Bridge，用于 Mixin 和插件之间的通信
         // 使用反射创建 Bridge 实例，因为 main 模块无法直接访问 mixin 模块的类
         try {
@@ -44,8 +46,6 @@ public class NekoKJSPlugin extends JavaPlugin {
             logger.severe("Failed to initialize Bridge: " + e.getMessage());
             e.printStackTrace();
         }
-        
-        logger.info("NekoKJS is loading...");
     }
 
     @Override
@@ -59,11 +59,11 @@ public class NekoKJSPlugin extends JavaPlugin {
         // 使用 resources 文件夹作为脚本目录
         File scriptsDir = configManager.getResourcesFolder();
         
+        // 初始化事件管理器（必须在脚本管理器之前，因为 ScriptContext 需要访问 EventsAPI）
+        eventManager = new EventManager(this);
+        
         // 初始化脚本管理器
         scriptManager = new ScriptManager(this, scriptsDir);
-        
-        // 初始化事件管理器
-        eventManager = new EventManager(this);
         
         // 注册命令（使用 Paper 命令 API）
         registerCommands();

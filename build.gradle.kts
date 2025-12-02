@@ -20,6 +20,7 @@ version = "1.0.0-SNAPSHOT"
 val pluginJson = leavesPluginJson {
     name = "NekoKJS"
     main = "org.virgil.nekokjs.NekoKJSPlugin"
+    loader = "org.virgil.nekokjs.loader.NekoKJSPluginLoader"
     authors.add("Virgil")
     description = "KubeJS plugin version for Leaves server based on Mixin"
     foliaSupported = false
@@ -90,9 +91,10 @@ val mixinSourceSet: SourceSet = sourceSets["mixin"]
 dependencies {
     apply `plugin dependencies`@{
         // JavaScript 引擎 - 使用与 KubeJS 相同的 Rhino 版本
-        implementation("dev.latvian.mods:rhino:2101.2.7-build.81")
+        // 改为 compileOnly，运行时从 Maven 仓库下载到 lib 文件夹
+        compileOnly("dev.latvian.mods:rhino:2101.2.7-build.81")
         // Gson 用于 JSON 处理
-        implementation("com.google.code.gson:gson:2.10.1")
+        compileOnly("com.google.code.gson:gson:2.10.1")
     }
 
     apply `api and server source`@{

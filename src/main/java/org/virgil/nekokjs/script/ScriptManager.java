@@ -89,6 +89,12 @@ public class ScriptManager {
         
         for (File packDir : packDirs) {
             try {
+                // 检查是否有 pack.yml 文件，没有则跳过（静默）
+                File packYml = new File(packDir, "pack.yml");
+                if (!packYml.exists()) {
+                    continue; // 静默跳过非脚本包的文件夹
+                }
+                
                 ScriptPack pack = new ScriptPack(packDir);
                 
                 // 检查包是否有效
@@ -131,25 +137,6 @@ public class ScriptManager {
         String scriptId = pack.getNamespace() + ":" + pack.getEntryPoint();
         
         loadPackScript(entryFile, context, scriptId, pack);
-    }
-    
-
-
-    /**
-     * 加载单个脚本文件
-     */
-    private void loadScript(File scriptFile, ScriptContext context, String scriptId) {
-        try {
-            String script = Files.readString(scriptFile.toPath());
-            context.evaluateScript(script, scriptId);
-            loadedScripts.put(scriptId, scriptFile);
-            logger.info(lang.scriptLoaded(scriptId));
-        } catch (IOException e) {
-            logger.severe(lang.scriptReadFailed(scriptId, e.getMessage()));
-        } catch (Exception e) {
-            logger.severe(lang.scriptExecuteFailed(scriptId, e.getMessage()));
-            e.printStackTrace();
-        }
     }
     
     /**
