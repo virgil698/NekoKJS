@@ -69,6 +69,10 @@ public class LanguageManager {
         return getMessage("plugin.bridge-init-failed", "error", error);
     }
     
+    public String pluginBridgeServerStarted() {
+        return getMessage("plugin.bridge-server-started");
+    }
+    
     // === 脚本消息 ===
     
     public String scriptContextInitialized(String type) {
@@ -93,6 +97,10 @@ public class LanguageManager {
     
     public String scriptAllLoaded(int count) {
         return getMessage("script.all-loaded", "count", count);
+    }
+    
+    public String scriptAsyncLoading() {
+        return getMessage("script.async-loading");
     }
     
     public String scriptTypeLoading(String type, int count) {
@@ -143,6 +151,38 @@ public class LanguageManager {
         return getMessage("script.example-server-failed", "error", error);
     }
     
+    public String scriptModuleAlreadyLoaded(String path) {
+        return getMessage("script.module-already-loaded", "path", path);
+    }
+    
+    public String scriptModuleNotFound(String path) {
+        return getMessage("script.module-not-found", "path", path);
+    }
+    
+    public String scriptModuleNotFile(String path) {
+        return getMessage("script.module-not-file", "path", path);
+    }
+    
+    public String scriptModuleSecurityError(String path) {
+        return getMessage("script.module-security-error", "path", path);
+    }
+    
+    public String scriptModulePathValidationFailed(String error) {
+        return getMessage("script.module-path-validation-failed", "error", error);
+    }
+    
+    public String scriptModuleLoading(String namespace, String path) {
+        return getMessage("script.module-loading", "namespace", namespace, "path", path);
+    }
+    
+    public String scriptModuleReadFailed(String path, String error) {
+        return getMessage("script.module-read-failed", "path", path, "error", error);
+    }
+    
+    public String scriptModuleExecuteFailed(String path, String error) {
+        return getMessage("script.module-execute-failed", "path", path, "error", error);
+    }
+    
     // === 事件消息 ===
     
     public String eventManagerInitialized(int interval) {
@@ -185,6 +225,10 @@ public class LanguageManager {
         return getMessage("event.listeners-cleaned");
     }
     
+    public String eventCleanupFailed(String error) {
+        return getMessage("event.cleanup-failed", "error", error);
+    }
+    
     // === 配置消息 ===
     
     public String configLoaded() {
@@ -217,6 +261,34 @@ public class LanguageManager {
     
     public String configTranslationsCreated(String path) {
         return getMessage("config.translations-created", "path", path);
+    }
+    
+    public String configReloading() {
+        return getMessage("config.reloading");
+    }
+    
+    public String configConfigReloaded() {
+        return getMessage("config.config-reloaded");
+    }
+    
+    public String configLanguageFileCreated(String file) {
+        return getMessage("config.language-file-created", "file", file);
+    }
+    
+    public String configExamplePackGenerating() {
+        return getMessage("config.example-pack-generating");
+    }
+    
+    public String configExamplePackResourceNotFound(String file) {
+        return getMessage("config.example-pack-resource-not-found", "file", file);
+    }
+    
+    public String configExamplePackGenerated(String pack) {
+        return getMessage("config.example-pack-generated", "pack", pack);
+    }
+    
+    public String configExamplePackFailed(String error) {
+        return getMessage("config.example-pack-failed", "error", error);
     }
     
     // === 命令消息 ===

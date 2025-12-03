@@ -3,6 +3,7 @@ package org.virgil.nekokjs.command;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.virgil.nekokjs.NekoKJSPlugin;
 
@@ -18,9 +19,11 @@ import java.util.List;
  */
 public class NekoKJSCommand implements BasicCommand {
     private final NekoKJSPlugin plugin;
+    private final MiniMessage miniMessage;
 
     public NekoKJSCommand(NekoKJSPlugin plugin) {
         this.plugin = plugin;
+        this.miniMessage = MiniMessage.miniMessage();
     }
 
     @Override
@@ -93,7 +96,9 @@ public class NekoKJSCommand implements BasicCommand {
                         sendMessage(stack, "list.no-packs");
                     } else {
                         for (var pack : packs) {
-                            String status = pack.isEnabled() ? "§a启用" : "§c禁用";
+                            String status = plugin.getConfigManager().getMessage(
+                                pack.isEnabled() ? "list.status-enabled" : "list.status-disabled"
+                            );
                             sendMessage(stack, "list.pack-item", 
                                 "name", pack.getName(),
                                 "namespace", pack.getNamespace(),
@@ -117,7 +122,10 @@ public class NekoKJSCommand implements BasicCommand {
                         sendMessage(stack, "list.detail-description", "description", pack.getDescription());
                         sendMessage(stack, "list.detail-entry", "entry", pack.getEntryPoint());
                         sendMessage(stack, "list.detail-priority", "priority", pack.getPriority());
-                        sendMessage(stack, "list.detail-enabled", "enabled", pack.isEnabled() ? "§a是" : "§c否");
+                        String enabled = plugin.getConfigManager().getMessage(
+                            pack.isEnabled() ? "list.enabled-yes" : "list.enabled-no"
+                        );
+                        sendMessage(stack, "list.detail-enabled", "enabled", enabled);
                         sendMessage(stack, "list.detail-footer");
                     }
                 }
@@ -140,10 +148,12 @@ public class NekoKJSCommand implements BasicCommand {
 
     /**
      * 发送翻译消息
+     * 使用 MiniMessage 解析颜色和格式
      */
     private void sendMessage(CommandSourceStack stack, String key, Object... replacements) {
         String message = plugin.getConfigManager().getMessage(key, replacements);
-        stack.getSender().sendMessage(Component.text(message));
+        Component component = miniMessage.deserialize(message);
+        stack.getSender().sendMessage(component);
     }
 
     @Override

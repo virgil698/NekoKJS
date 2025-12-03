@@ -6,27 +6,30 @@ console.info("[PlayerEvents] 玩家事件模块已加载 / Player events module 
 // 注册玩家加入事件
 Events.playerJoin(event => {
     let player = event.getPlayer();
-    let playerName = formatPlayerName(player, "§b"); // 使用来自 helper.js 的函数
+    let playerName = player.getName();
     
-    console.info(playerName + " §7加入了服务器");
+    console.info("<aqua>" + playerName + " <gray>加入了服务器");
     
-    // 欢迎消息
-    player.sendMessage("§6§l━━━━━━━━━━━━━━━━━━━━━━━━");
-    player.sendMessage("§a§l  欢迎来到服务器！");
-    player.sendMessage("§e  当前在线: §f" + Server.getOnlinePlayerCount() + " §e人");
-    player.sendMessage("§6§l━━━━━━━━━━━━━━━━━━━━━━━━");
+    // 欢迎消息（使用 MiniMessage 格式）
+    // 推荐使用 Message.send() 发送富文本消息
+    Message.send(player, "<gold><bold>━━━━━━━━━━━━━━━━━━━━━━━━");
+    Message.send(player, "<green><bold>  欢迎来到服务器！");
+    Message.send(player, "<yellow>  当前在线: <white>" + Server.getOnlinePlayerCount() + " <yellow>人");
+    Message.send(player, "<gold><bold>━━━━━━━━━━━━━━━━━━━━━━━━");
+    
+    // 如果需要发送普通文本消息，可以使用 PlayerMessageHelper 避免方法歧义：
+    // PlayerMessageHelper.sendMessage(player, "普通文本消息");
     
     // 广播加入消息
-    broadcastColored("玩家 " + player.getName() + " 加入了游戏！", "§e");
+    Message.broadcast("<yellow>玩家 <white>" + player.getName() + " <yellow>加入了游戏！");
 });
 
 // 注册玩家退出事件
 Events.playerQuit(event => {
     let player = event.getPlayer();
-    let playerName = formatPlayerName(player, "§c");
     
-    console.info(playerName + " §7离开了服务器");
-    broadcastColored("玩家 " + player.getName() + " 离开了游戏！", "§7");
+    console.info("<red>" + player.getName() + " <gray>离开了服务器");
+    Message.broadcast("<gray>玩家 <white>" + player.getName() + " <gray>离开了游戏！");
 });
 
 // 注册玩家聊天事件
@@ -38,11 +41,11 @@ Events.playerChat(event => {
     
     // 检测特殊关键词
     if (message.toLowerCase().includes("hello")) {
-        player.sendMessage("§aHello, " + player.getName() + "! 👋");
+        Message.send(player, "<green>Hello, <white>" + player.getName() + "<green>! 👋");
     }
     
     if (message.toLowerCase().includes("help")) {
-        player.sendMessage("§e需要帮助吗？输入 /help 查看命令列表");
+        Message.send(player, "<yellow>需要帮助吗？输入 <white>/help <yellow>查看命令列表");
     }
 });
 

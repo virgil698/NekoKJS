@@ -5,10 +5,20 @@ import dev.latvian.mods.rhino.ContextFactory;
 import dev.latvian.mods.rhino.Scriptable;
 import dev.latvian.mods.rhino.ScriptableObject;
 import org.virgil.nekokjs.NekoKJSPlugin;
-import org.virgil.nekokjs.api.ConsoleAPI;
-import org.virgil.nekokjs.api.EventsAPI;
-import org.virgil.nekokjs.api.ScriptLoaderAPI;
-import org.virgil.nekokjs.api.ServerAPI;
+import org.virgil.nekokjs.api.core.ConsoleAPI;
+import org.virgil.nekokjs.api.core.MessageAPI;
+import org.virgil.nekokjs.api.core.ScriptLoaderAPI;
+import org.virgil.nekokjs.api.core.ServerAPI;
+import org.virgil.nekokjs.api.dimension.DimensionAPI;
+import org.virgil.nekokjs.api.event.EventsAPI;
+import org.virgil.nekokjs.api.worldgen.BiomeAPI;
+import org.virgil.nekokjs.api.worldgen.FeatureAPI;
+import org.virgil.nekokjs.api.worldgen.GeneratorAPI;
+import org.virgil.nekokjs.api.worldgen.JigsawAPI;
+import org.virgil.nekokjs.api.worldgen.NoiseAPI;
+import org.virgil.nekokjs.api.worldgen.StructureAPI;
+import org.virgil.nekokjs.api.worldgen.WorldGenAPI;
+import org.virgil.nekokjs.api.integration.CraftEngineAPI;
 import org.virgil.nekokjs.lang.LanguageManager;
 import org.virgil.nekokjs.script.ScriptPack;
 
@@ -67,6 +77,48 @@ public class ScriptContext {
         EventsAPI eventsAPI = plugin.getEventManager().getEventsAPI();
         ScriptableObject.putProperty(scope, "Events", eventsAPI, context);
         
+        // Message API - MiniMessage 格式消息
+        MessageAPI messageAPI = new MessageAPI(plugin.getServer());
+        ScriptableObject.putProperty(scope, "Message", messageAPI, context);
+        
+        // WorldGen API - 世界生成相关操作
+        WorldGenAPI worldGenAPI = new WorldGenAPI();
+        ScriptableObject.putProperty(scope, "WorldGen", worldGenAPI, context);
+        
+        // Dimension API - 自定义维度操作
+        DimensionAPI dimensionAPI = new DimensionAPI();
+        ScriptableObject.putProperty(scope, "Dimension", dimensionAPI, context);
+        
+        // Structure API - 结构生成
+        StructureAPI structureAPI = new StructureAPI();
+        ScriptableObject.putProperty(scope, "Structure", structureAPI, context);
+        
+        // Biome API - 生物群系操作
+        BiomeAPI biomeAPI = new BiomeAPI();
+        ScriptableObject.putProperty(scope, "Biome", biomeAPI, context);
+        
+        // Feature API - 特征生成（矿石、树木等）
+        FeatureAPI featureAPI = new FeatureAPI();
+        ScriptableObject.putProperty(scope, "Feature", featureAPI, context);
+        
+        // Generator API - 自定义生成器
+        GeneratorAPI generatorAPI = new GeneratorAPI();
+        ScriptableObject.putProperty(scope, "Generator", generatorAPI, context);
+        
+        // Jigsaw API - 拼图系统
+        JigsawAPI jigsawAPI = new JigsawAPI();
+        ScriptableObject.putProperty(scope, "Jigsaw", jigsawAPI, context);
+        
+        // Noise API - 噪声生成
+        NoiseAPI noiseAPI = new NoiseAPI();
+        ScriptableObject.putProperty(scope, "Noise", noiseAPI, context);
+        
+        // CraftEngine API - CraftEngine 集成（可选）
+        if (CraftEngineAPI.isAvailable()) {
+            CraftEngineAPI craftEngineAPI = new CraftEngineAPI();
+            ScriptableObject.putProperty(scope, "CraftEngine", craftEngineAPI, context);
+        }
+        
         // 直接暴露 Bukkit 对象（高级用法）
         ScriptableObject.putProperty(scope, "server", plugin.getServer(), context);
         ScriptableObject.putProperty(scope, "plugin", plugin, context);
@@ -92,7 +144,7 @@ public class ScriptContext {
      */
     public Object evaluatePackScript(String script, String sourceName, ScriptPack pack) {
         // 创建脚本加载器
-        this.scriptLoader = new ScriptLoaderAPI(logger, contextFactory, scope, pack);
+        this.scriptLoader = new ScriptLoaderAPI(logger, lang, contextFactory, scope, pack);
         
         // 使用 CustomFunction 注册 load 函数
         dev.latvian.mods.rhino.CustomFunction loadFunc = new dev.latvian.mods.rhino.CustomFunction(

@@ -1,0 +1,23 @@
+# NekoKJS 玩家欢迎消息包
+# Player Welcome Message Pack
+
+# 包基本信息
+pack:
+  name: "Player Welcome" # 包名称
+  namespace: "playerwelcome" # 包命名空间
+  version: "1.0.0" # 版本号
+  authors: # 作者
+    - "NekoKJS Team"
+  description: "A complete player welcome message system with customizable messages, titles, and sounds" # 描述
+  dependencies: [] # 依赖的其他包（可选）
+
+# 加载设置
+loading:
+  enabled: true # 是否启用此包
+  priority: 50 # 加载优先级（数字越小优先级越高）
+  load-on-startup: true # 是否在服务器启动时加载
+
+# 脚本设置
+scripts:
+  # 脚本入口文件
+  entry: "data/main.js"

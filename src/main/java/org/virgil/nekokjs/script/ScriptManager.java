@@ -48,6 +48,7 @@ public class ScriptManager {
     /**
      * 加载所有脚本
      * 扫描 resources/ 目录下的所有脚本包
+     * 异步执行以避免阻塞主线程
      */
     public void loadAllScripts() {
         // 扫描并加载所有脚本包
@@ -56,18 +57,38 @@ public class ScriptManager {
         // 按优先级排序
         scriptPacks.sort(Comparator.comparingInt(ScriptPack::getPriority));
         
-        // 加载每个包的脚本
-        for (ScriptPack pack : scriptPacks) {
-            if (!pack.isEnabled()) {
-                logger.info("跳过已禁用的脚本包: " + pack.toString());
-                continue;
+        // 提示异步加载
+        logger.info(lang.scriptAsyncLoading());
+        
+        // 异步加载脚本，避免阻塞主线程
+        // Folia 兼容：使用异步调度器
+        runAsync(() -> {
+            for (ScriptPack pack : scriptPacks) {
+                if (!pack.isEnabled()) {
+                    logger.info("跳过已禁用的脚本包: " + pack.toString());
+                    continue;
+                }
+                
+                logger.info("加载脚本包: " + pack.toString());
+                loadPackScripts(pack);
             }
             
-            logger.info("加载脚本包: " + pack.toString());
-            loadPackScripts(pack);
+            logger.info(lang.scriptAllLoaded(loadedScripts.size()));
+        });
+    }
+    
+    /**
+     * 异步执行任务（Folia 兼容）
+     */
+    private void runAsync(Runnable task) {
+        try {
+            // Folia：使用异步调度器
+            var asyncScheduler = plugin.getServer().getAsyncScheduler();
+            asyncScheduler.runNow(plugin, scheduledTask -> task.run());
+        } catch (NoSuchMethodError e) {
+            // Paper/Spigot：使用传统调度器
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, task);
         }
-        
-        logger.info(lang.scriptAllLoaded(loadedScripts.size()));
     }
     
     /**

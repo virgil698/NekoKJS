@@ -1,8 +1,9 @@
-package org.virgil.nekokjs.api;
+package org.virgil.nekokjs.api.core;
 
 import dev.latvian.mods.rhino.Context;
 import dev.latvian.mods.rhino.ContextFactory;
 import dev.latvian.mods.rhino.Scriptable;
+import org.virgil.nekokjs.lang.LanguageManager;
 import org.virgil.nekokjs.script.ScriptPack;
 
 import java.io.File;
@@ -18,13 +19,15 @@ import java.util.logging.Logger;
  */
 public class ScriptLoaderAPI {
     private final Logger logger;
+    private final LanguageManager lang;
     private final ContextFactory contextFactory;
     private final Scriptable scope;
     private final ScriptPack pack;
     private final Set<String> loadedScripts;
     
-    public ScriptLoaderAPI(Logger logger, ContextFactory contextFactory, Scriptable scope, ScriptPack pack) {
+    public ScriptLoaderAPI(Logger logger, LanguageManager lang, ContextFactory contextFactory, Scriptable scope, ScriptPack pack) {
         this.logger = logger;
+        this.lang = lang;
         this.contextFactory = contextFactory;
         this.scope = scope;
         this.pack = pack;
@@ -45,7 +48,7 @@ public class ScriptLoaderAPI {
         
         // 检查是否已加载
         if (loadedScripts.contains(path)) {
-            logger.info("脚本已加载，跳过: " + path);
+            logger.info(lang.scriptModuleAlreadyLoaded(path));
             return null;
         }
         
@@ -54,12 +57,12 @@ public class ScriptLoaderAPI {
         
         // 验证文件
         if (!scriptFile.exists()) {
-            logger.warning("脚本文件不存在: " + path);
+            logger.warning(lang.scriptModuleNotFound(path));
             return null;
         }
         
         if (!scriptFile.isFile()) {
-            logger.warning("路径不是文件: " + path);
+            logger.warning(lang.scriptModuleNotFile(path));
             return null;
         }
         
@@ -69,11 +72,11 @@ public class ScriptLoaderAPI {
             String canonicalScriptPath = scriptFile.getCanonicalPath();
             
             if (!canonicalScriptPath.startsWith(canonicalPackPath)) {
-                logger.warning("安全错误: 脚本路径超出包目录范围: " + path);
+                logger.warning(lang.scriptModuleSecurityError(path));
                 return null;
             }
         } catch (IOException e) {
-            logger.warning("路径验证失败: " + e.getMessage());
+            logger.warning(lang.scriptModulePathValidationFailed(e.getMessage()));
             return null;
         }
         
@@ -85,15 +88,15 @@ public class ScriptLoaderAPI {
             // 标记为已加载
             loadedScripts.add(path);
             
-            logger.info("加载模块脚本: " + pack.getNamespace() + ":" + path);
+            logger.info(lang.scriptModuleLoading(pack.getNamespace(), path));
             
             // 在同一个 scope 中执行，共享变量和函数
             return ctx.evaluateString(scope, scriptContent, path, 1, null);
         } catch (IOException e) {
-            logger.severe("读取脚本文件失败 [" + path + "]: " + e.getMessage());
+            logger.severe(lang.scriptModuleReadFailed(path, e.getMessage()));
             return null;
         } catch (Exception e) {
-            logger.severe("执行脚本失败 [" + path + "]: " + e.getMessage());
+            logger.severe(lang.scriptModuleExecuteFailed(path, e.getMessage()));
             e.printStackTrace();
             return null;
         }
@@ -119,6 +122,13 @@ public class ScriptLoaderAPI {
      */
     public String[] getLoadedScripts() {
         return loadedScripts.toArray(new String[0]);
+    }
+    
+    /**
+     * 获取已加载脚本数量
+     */
+    public int getLoadedCount() {
+        return loadedScripts.size();
     }
     
     /**

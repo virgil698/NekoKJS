@@ -1,4 +1,4 @@
-package org.virgil.nekokjs.api;
+package org.virgil.nekokjs.api.core;
 
 import java.util.logging.Logger;
 

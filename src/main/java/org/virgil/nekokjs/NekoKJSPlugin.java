@@ -10,6 +10,9 @@ import org.virgil.nekokjs.config.ConfigManager;
 import org.virgil.nekokjs.lang.LanguageManager;
 import org.virgil.nekokjs.script.ScriptManager;
 import org.virgil.nekokjs.event.EventManager;
+import org.virgil.nekokjs.dimension.DimensionManager;
+import org.virgil.nekokjs.api.dimension.DimensionAPI;
+import org.virgil.nekokjs.api.integration.CraftEngineAPI;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -23,6 +26,7 @@ public class NekoKJSPlugin extends JavaPlugin {
     private ConfigManager configManager;
     private ScriptManager scriptManager;
     private EventManager eventManager;
+    private DimensionManager dimensionManager;
     private Logger logger;
 
     @Override
@@ -32,16 +36,26 @@ public class NekoKJSPlugin extends JavaPlugin {
         
         logger.info("NekoKJS is loading...");
         
+        // 初始化维度管理器（必须在 onLoad 阶段，在世界加载前）
+        dimensionManager = new DimensionManager(this);
+        dimensionManager.loadDimensions();
+        
+        // 初始化 DimensionAPI
+        DimensionAPI.initialize(dimensionManager);
+        
         // 初始化 Bridge，用于 Mixin 和插件之间的通信
         // 使用反射创建 Bridge 实例，因为 main 模块无法直接访问 mixin 模块的类
         try {
             Class<?> bridgeClass = Class.forName("org.virgil.nekokjs.bridge.NekoKJSBridge");
-            Object bridge = bridgeClass.getConstructor(Class.forName("org.virgil.nekokjs.NekoKJSPlugin")).newInstance(this);
+            // 构造函数接受 Object 类型参数
+            Object bridge = bridgeClass.getConstructor(Object.class).newInstance(this);
             
             Class<?> managerClass = Class.forName("org.virgil.nekokjs.mixin.bridge.BridgeManager");
             Object manager = managerClass.getField("INSTANCE").get(null);
             managerClass.getMethod("setBridge", Class.forName("org.virgil.nekokjs.mixin.bridge.Bridge"))
                        .invoke(manager, bridge);
+            
+            logger.info("Bridge initialized successfully!");
         } catch (Exception e) {
             logger.severe("Failed to initialize Bridge: " + e.getMessage());
             e.printStackTrace();
@@ -61,6 +75,9 @@ public class NekoKJSPlugin extends JavaPlugin {
         
         // 初始化事件管理器（必须在脚本管理器之前，因为 ScriptContext 需要访问 EventsAPI）
         eventManager = new EventManager(this);
+        
+        // 初始化 CraftEngine 集成（可选）
+        CraftEngineAPI.initialize();
         
         // 初始化脚本管理器
         scriptManager = new ScriptManager(this, scriptsDir);
@@ -116,6 +133,10 @@ public class NekoKJSPlugin extends JavaPlugin {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public DimensionManager getDimensionManager() {
+        return dimensionManager;
     }
 
     /**

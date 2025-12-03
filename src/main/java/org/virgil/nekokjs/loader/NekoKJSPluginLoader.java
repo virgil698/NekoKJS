@@ -13,13 +13,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 /**
- * NekoKJS 插件加载器
- * 在插件加载的最早阶段下载运行时依赖到插件 libs 文件夹
+ * NekoKJS Plugin Loader
+ * Downloads runtime dependencies to the plugin libs folder at the earliest stage of plugin loading
  */
 @SuppressWarnings("UnstableApiUsage")
 public class NekoKJSPluginLoader implements PluginLoader {
     
-    // 依赖信息
+    // Dependencies
     private static final String[][] DEPENDENCIES = {
         {"dev.latvian.mods", "rhino", "2101.2.7-build.81", "https://maven.latvian.dev/releases"},
         {"com.google.code.gson", "gson", "2.10.1", "https://repo1.maven.org/maven2"}
@@ -27,15 +27,15 @@ public class NekoKJSPluginLoader implements PluginLoader {
     
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
-        // 获取插件数据文件夹
+        // Get plugin data folder
         Path dataFolder = classpathBuilder.getContext().getDataDirectory();
         Path libsDir = dataFolder.resolve("libs");
         
         try {
-            // 确保 libs 目录存在
+            // Ensure libs directory exists
             Files.createDirectories(libsDir);
             
-            // 下载并加载每个依赖
+            // Download and load each dependency
             for (String[] dep : DEPENDENCIES) {
                 String groupId = dep[0];
                 String artifactId = dep[1];
@@ -45,29 +45,29 @@ public class NekoKJSPluginLoader implements PluginLoader {
                 String fileName = artifactId + "-" + version + ".jar";
                 Path jarPath = libsDir.resolve(fileName);
                 
-                // 如果文件不存在，下载它
+                // Download if file doesn't exist
                 if (!Files.exists(jarPath)) {
-                    System.out.println("[NekoKJS] 下载依赖: " + fileName);
+                    System.out.println("[NekoKJS] Downloading dependency: " + fileName);
                     downloadDependency(groupId, artifactId, version, repository, jarPath);
-                    System.out.println("[NekoKJS] ✓ 下载完成: " + fileName);
+                    System.out.println("[NekoKJS] Downloaded: " + fileName);
                 } else {
-                    System.out.println("[NekoKJS] 依赖已存在: " + fileName);
+                    System.out.println("[NekoKJS] Dependency exists: " + fileName);
                 }
                 
-                // 添加到类路径
+                // Add to classpath
                 classpathBuilder.addLibrary(new JarLibrary(jarPath));
             }
             
-            System.out.println("[NekoKJS] 所有依赖已加载到插件 libs 文件夹");
+            System.out.println("[NekoKJS] All dependencies loaded to plugin libs folder");
             
         } catch (IOException e) {
-            System.err.println("[NekoKJS] 下载依赖失败: " + e.getMessage());
+            System.err.println("[NekoKJS] Failed to download dependencies: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
     /**
-     * 下载单个依赖
+     * Download single dependency
      */
     private void downloadDependency(String groupId, String artifactId, String version, 
                                     String repository, Path targetPath) throws IOException {
@@ -75,9 +75,9 @@ public class NekoKJSPluginLoader implements PluginLoader {
                      + artifactId + "-" + version + ".jar";
         String downloadUrl = repository + "/" + path;
         
-        System.out.println("[NekoKJS]   从: " + downloadUrl);
+        System.out.println("[NekoKJS]   From: " + downloadUrl);
         
-        // 下载到临时文件
+        // Download to temporary file
         Path tempFile = targetPath.getParent().resolve(targetPath.getFileName() + ".tmp");
         
         try {
@@ -93,7 +93,7 @@ public class NekoKJSPluginLoader implements PluginLoader {
             }
             
             long fileSize = conn.getContentLengthLong();
-            System.out.println("[NekoKJS]   大小: " + formatFileSize(fileSize));
+            System.out.println("[NekoKJS]   Size: " + formatFileSize(fileSize));
             
             try (InputStream in = conn.getInputStream();
                  OutputStream out = Files.newOutputStream(tempFile)) {
@@ -108,11 +108,11 @@ public class NekoKJSPluginLoader implements PluginLoader {
                 }
             }
             
-            // 移动到目标位置
+            // Move to target location
             Files.move(tempFile, targetPath, StandardCopyOption.REPLACE_EXISTING);
             
         } catch (IOException e) {
-            // 清理临时文件
+            // Clean up temporary file
             try {
                 Files.deleteIfExists(tempFile);
             } catch (IOException ignored) {
@@ -122,7 +122,7 @@ public class NekoKJSPluginLoader implements PluginLoader {
     }
     
     /**
-     * 格式化文件大小
+     * Format file size
      */
     private String formatFileSize(long bytes) {
         if (bytes < 1024) return bytes + " B";

@@ -23,7 +23,7 @@ val pluginJson = leavesPluginJson {
     loader = "org.virgil.nekokjs.loader.NekoKJSPluginLoader"
     authors.add("Virgil")
     description = "KubeJS plugin version for Leaves server based on Mixin"
-    foliaSupported = false
+    foliaSupported = true
     apiVersion = libs.versions.leavesApi.extractMCVersion()
     // TODO: if your logic can work without mixin, can use `features.optional.add("mixin")`
     features.required.add("mixin")
@@ -71,6 +71,10 @@ repositories {
     maven("https://maven.latvian.dev/releases") {
         name = "latvian"
     }
+    // MomiRealms Maven - 用于 CraftEngine
+    maven("https://repo.momirealms.net/releases/") {
+        name = "momirealms"
+    }
     mavenLocal()
 }
 
@@ -91,10 +95,12 @@ val mixinSourceSet: SourceSet = sourceSets["mixin"]
 dependencies {
     apply `plugin dependencies`@{
         // JavaScript 引擎 - 使用与 KubeJS 相同的 Rhino 版本
-        // 改为 compileOnly，运行时从 Maven 仓库下载到 lib 文件夹
         compileOnly("dev.latvian.mods:rhino:2101.2.7-build.81")
         // Gson 用于 JSON 处理
         compileOnly("com.google.code.gson:gson:2.10.1")
+        // CraftEngine API - 可选依赖
+        compileOnly("net.momirealms:craft-engine-core:0.0.65")
+        compileOnly("net.momirealms:craft-engine-bukkit:0.0.65")
     }
 
     apply `api and server source`@{

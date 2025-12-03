@@ -5,7 +5,14 @@
   "compatibilityLevel": "JAVA_21",
   "target": "@env(PREINIT)",
   "mixins": [
-    "MinecraftServerMixin"
+    "dimension.MinecraftServerMixin",
+    "worldgen.NoiseBasedChunkGeneratorMixin",
+    "worldgen.BiomeSourceMixin",
+    "worldgen.DensityFunctionMixin",
+    "worldgen.SurfaceRulesMixin"
   ],
+  "injectors": {
+    "defaultRequire": 1
+  },
   "plugin": "org.virgil.nekokjs.mixin.NekoKJSMixinConfigPlugin"
 }

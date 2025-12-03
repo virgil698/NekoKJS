@@ -39,12 +39,17 @@ console.info("\n[Main] 所有模块加载完成！/ All modules loaded!\n");
 // ===== 服务器信息 =====
 // Server Information
 
-console.info("=================================");
+console.info("=========================");
 console.info("服务器名称 / Server Name: " + Server.getName());
 console.info("服务器版本 / Server Version: " + Server.getVersion());
-console.info("在线玩家数 / Online Players: " + Server.getOnlinePlayerCount());
+console.info("在线玩家 / Online Players: " + Server.getOnlinePlayerCount() + "/" + Server.getMaxPlayers());
+
+// 时间信息
+console.info("游戏内时间 / World Time: " + Server.getWorldTime());
+console.info("系统时间戳 / System Time: " + Server.getCurrentTimeMillis());
+console.info("游戏刻数 / Game Ticks: " + Server.getGameTime());
 console.info("最大玩家数 / Max Players: " + Server.getMaxPlayers());
-console.info("=================================");
+console.info("=========================");
 
 // ===== 测试加载的模块功能 =====
 // Test Loaded Module Functions
@@ -72,10 +77,10 @@ Events.playerInteract(event => {
     if (action.toString().includes("RIGHT_CLICK")) {
         let item = player.getInventory().getItemInMainHand();
         if (item != null && item.getType().toString() === "STICK") {
-            player.sendMessage("§6✨ 魔法棒被激活了！/ Magic wand activated!");
+            Message.send(player, "<gold>✨ 魔法棒被激活了！/ Magic wand activated!");
             
-            // 使用加载的工具函数
-            broadcastColored(player.getName() + " 使用了魔法棒！", "§d");
+            // 使用 MiniMessage 广播
+            Message.broadcast("<light_purple>" + player.getName() + " 使用了魔法棒！");
         }
     }
 });

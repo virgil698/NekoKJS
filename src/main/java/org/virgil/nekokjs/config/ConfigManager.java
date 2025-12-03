@@ -105,7 +105,8 @@ public class ConfigManager {
             File langFile = new File(translationsFolder, language + ".yml");
             if (!langFile.exists()) {
                 saveResource("translations/" + language + ".yml");
-                logger.info("已创建语言文件: " + language + ".yml");
+                // Use English here as languageManager is not yet initialized
+                logger.info("Created language file: " + language + ".yml");
             }
         }
     }
@@ -114,7 +115,7 @@ public class ConfigManager {
      * 重新加载配置文件
      */
     public void reloadConfig() {
-        logger.info("正在重新加载插件配置...");
+        logger.info(languageManager != null ? languageManager.configReloading() : "Reloading plugin configuration...");
         
         // 重新加载 config.yml
         config = loadConfig("config.yml");
@@ -129,7 +130,7 @@ public class ConfigManager {
         translations = loadTranslation(config.getString("language", "zh_CN"));
         languageManager = new LanguageManager(translations);
         
-        logger.info("插件配置已重新加载");
+        logger.info(languageManager.configConfigReloaded());
     }
 
     /**
@@ -200,7 +201,7 @@ public class ConfigManager {
                 createDefaultTranslation(file);
             }
         } catch (IOException e) {
-            logger.severe("Failed to create default config file: " + e.getMessage());
+            logger.severe((languageManager != null ? languageManager.configDefaultCreateFailed(e.getMessage()) : "Failed to create default config file: " + e.getMessage()));
         }
     }
 
@@ -335,7 +336,8 @@ public class ConfigManager {
      */
     private void createExampleScriptPack() {
         try {
-            logger.info("正在生成示例脚本包...");
+            // Use English here as languageManager is not yet initialized
+            logger.info("Generating example script pack...");
             
             // 示例脚本包文件列表
             String[] exampleFiles = {
@@ -350,7 +352,7 @@ public class ConfigManager {
             for (String resourcePath : exampleFiles) {
                 InputStream input = plugin.getResource(resourcePath);
                 if (input == null) {
-                    logger.warning("无法找到资源文件: " + resourcePath);
+                    logger.warning("Resource file not found: " + resourcePath);
                     continue;
                 }
                 
@@ -364,9 +366,9 @@ public class ConfigManager {
                 input.close();
             }
             
-            logger.info("示例脚本包已生成: example_pack");
+            logger.info("Example script pack generated: example_pack");
         } catch (IOException e) {
-            logger.severe("生成示例脚本包失败: " + e.getMessage());
+            logger.severe("Failed to generate example script pack: " + e.getMessage());
             e.printStackTrace();
         }
     }

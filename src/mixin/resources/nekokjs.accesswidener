@@ -6,3 +6,93 @@ accessWidener v2 named
 # accessible field net/minecraft/server/MinecraftServer serverThread Ljava/lang/Thread;
 # accessible method net/minecraft/server/MinecraftServer getPlayerList ()Lnet/minecraft/server/players/PlayerList;
 accessible method org/bukkit/craftbukkit/Main asList ([Ljava/lang/String;)Ljava/util/List;
+
+# ===== 世界生成相关访问权限 =====
+
+# ChunkGenerator 相关
+accessible class net/minecraft/world/level/chunk/ChunkGenerator
+accessible method net/minecraft/world/level/chunk/ChunkGenerator buildSurface (Lnet/minecraft/server/level/WorldGenRegion;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/chunk/ChunkAccess;)V
+accessible method net/minecraft/world/level/chunk/ChunkGenerator fillFromNoise (Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)Ljava/util/concurrent/CompletableFuture;
+accessible method net/minecraft/world/level/chunk/ChunkGenerator applyCarvers (Lnet/minecraft/server/level/WorldGenRegion;JLnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/biome/BiomeManager;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkAccess;)V
+
+# NoiseBasedChunkGenerator 相关
+accessible class net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator
+accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator settings Lnet/minecraft/core/Holder;
+
+# BiomeSource 相关
+accessible class net/minecraft/world/level/biome/BiomeSource
+accessible method net/minecraft/world/level/biome/BiomeSource getNoiseBiome (IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;
+
+# ChunkAccess 相关
+accessible class net/minecraft/world/level/chunk/ChunkAccess
+accessible method net/minecraft/world/level/chunk/ChunkAccess setBlockState (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/level/block/state/BlockState;
+accessible method net/minecraft/world/level/chunk/ChunkAccess getBlockState (Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;
+
+# ProtoChunk 相关
+accessible class net/minecraft/world/level/chunk/ProtoChunk
+accessible field net/minecraft/world/level/chunk/ProtoChunk sections [Lnet/minecraft/world/level/chunk/LevelChunkSection;
+
+# WorldGenRegion 相关
+accessible class net/minecraft/server/level/WorldGenRegion
+accessible method net/minecraft/server/level/WorldGenRegion getLevel ()Lnet/minecraft/server/level/ServerLevel;
+
+# BlockState 相关
+accessible class net/minecraft/world/level/block/state/BlockState
+
+# Biome 相关
+accessible class net/minecraft/world/level/biome/Biome
+accessible class net/minecraft/world/level/biome/Climate
+accessible class net/minecraft/world/level/biome/Climate$Sampler
+
+# RandomState 相关
+accessible class net/minecraft/world/level/levelgen/RandomState
+accessible method net/minecraft/world/level/levelgen/RandomState router ()Lnet/minecraft/world/level/levelgen/NoiseRouter;
+
+# ===== 自定义维度相关访问权限 =====
+
+# DimensionType 相关
+accessible class net/minecraft/world/level/dimension/DimensionType
+accessible class net/minecraft/world/level/dimension/DimensionType$MonsterSettings
+accessible method net/minecraft/world/level/dimension/DimensionType <init> (Ljava/util/OptionalLong;ZZZZDZZIIILnet/minecraft/tags/TagKey;Lnet/minecraft/resources/ResourceLocation;FLjava/util/Optional;Lnet/minecraft/world/level/dimension/DimensionType$MonsterSettings;)V
+
+# LevelStem 相关
+accessible class net/minecraft/world/level/dimension/LevelStem
+accessible method net/minecraft/world/level/dimension/LevelStem <init> (Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/chunk/ChunkGenerator;)V
+
+# Registry 相关
+accessible class net/minecraft/core/Registry
+accessible class net/minecraft/core/RegistryAccess
+accessible class net/minecraft/core/RegistryAccess$Frozen
+accessible method net/minecraft/core/RegistryAccess lookupOrThrow (Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/core/Registry;
+accessible method net/minecraft/core/Registry getHolder (Lnet/minecraft/resources/ResourceKey;)Ljava/util/Optional;
+accessible method net/minecraft/core/Registry getHolderOrThrow (Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/core/Holder$Reference;
+accessible method net/minecraft/core/Registry containsKey (Lnet/minecraft/resources/ResourceKey;)Z
+
+# MinecraftServer 相关
+accessible method net/minecraft/server/MinecraftServer registryAccess ()Lnet/minecraft/core/RegistryAccess$Frozen;
+
+# FlatLevelSource 相关
+accessible class net/minecraft/world/level/levelgen/FlatLevelSource
+accessible method net/minecraft/world/level/levelgen/FlatLevelSource getDefault (Lnet/minecraft/core/Registry;Lnet/minecraft/core/Registry;Lnet/minecraft/core/Registry;)Lnet/minecraft/world/level/levelgen/FlatLevelSource;
+
+# MultiNoiseBiomeSource 相关
+accessible class net/minecraft/world/level/biome/MultiNoiseBiomeSource
+accessible class net/minecraft/world/level/biome/MultiNoiseBiomeSource$Preset
+accessible method net/minecraft/world/level/biome/MultiNoiseBiomeSource$Preset biomeSource (Lnet/minecraft/core/Registry;)Lnet/minecraft/world/level/biome/BiomeSource;
+
+# NoiseGeneratorSettings 相关
+accessible class net/minecraft/world/level/levelgen/NoiseGeneratorSettings
+accessible field net/minecraft/world/level/levelgen/NoiseGeneratorSettings OVERWORLD Lnet/minecraft/resources/ResourceKey;
+
+# MappedRegistry 相关（用于反射修改注册表）
+accessible class net/minecraft/core/MappedRegistry
+accessible field net/minecraft/core/MappedRegistry frozen Z
+accessible method net/minecraft/core/MappedRegistry register (Lnet/minecraft/resources/ResourceKey;Ljava/lang/Object;Lnet/minecraft/core/RegistrationInfo;)Lnet/minecraft/core/Holder$Reference;
+
+# RegistrationInfo 相关
+accessible class net/minecraft/core/RegistrationInfo
+accessible field net/minecraft/core/RegistrationInfo BUILT_IN Lnet/minecraft/core/RegistrationInfo;
+
+# Registry 方法
+accessible method net/minecraft/core/Registry getHolder (Lnet/minecraft/resources/ResourceKey;)Ljava/util/Optional;
+accessible method net/minecraft/core/Registry getHolderOrThrow (Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/core/Holder$Reference;
